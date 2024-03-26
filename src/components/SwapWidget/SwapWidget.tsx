@@ -1,6 +1,6 @@
 import { ArrowsUpDownIcon } from "@heroicons/react/20/solid";
 import * as Tooltip from "@radix-ui/react-tooltip";
-import { ElementRef, useEffect, useRef } from "react";
+import { ElementRef, useCallback, useEffect, useRef } from "react";
 import type {} from "typed-query-selector";
 
 import { disclosure } from "@/context/disclosures";
@@ -24,6 +24,9 @@ import { UsdDiff } from "../UsdValue";
 import { useWalletModal, WalletModal } from "../WalletModal";
 import { SwapDetails } from "./SwapDetails";
 import { useSwapWidget } from "./useSwapWidget";
+import { useRouter } from "next/router";
+import { useAssets } from "@/context/assets";
+import { splitRight } from "@/utils/str";
 
 export function SwapWidget() {
   useEffect(() => void disclosure.rehydrate(), []);
@@ -63,6 +66,37 @@ export function SwapWidget() {
     sourceFeeAsset,
     swapPriceImpactPercent,
   } = useSwapWidget();
+
+  const { getAssetBySymbol } = useAssets();
+
+  const { query: urlQueryArgs } = useRouter();
+
+  // Use the `from` and `to` URL query string args to update the source and dest
+  // token selectors. These query string args have the format of
+  // `${chainID}_${assetSymbol}`.
+  const setChainAndAssetFromUrl = useCallback(() => {
+    const { from: fromValue, to: toValue } = urlQueryArgs;
+    [
+      { value: fromValue, setAsset: onSourceAssetChange },
+      { value: toValue, setAsset: onDestinationAssetChange },
+    ].forEach(({ value, setAsset }) => {
+      if (typeof value === "string") {
+        const [chainID, symbol] = splitRight(value, "_") ?? [null, null];
+        const chain = chainID ? chains?.find((c) => c.chainID === chainID) : null;
+        if (chain) {
+          const asset = symbol ? getAssetBySymbol(symbol, chain.chainID) : null;
+          if (asset) {
+            setAsset(asset);
+          }
+        }
+      }
+    });
+  }, [urlQueryArgs, chains, getAssetBySymbol, onSourceAssetChange, onDestinationAssetChange]);
+
+  // Initialize token selector assets based on URL query string params
+  useEffect(() => {
+    setChainAndAssetFromUrl();
+  }, [setChainAndAssetFromUrl]);
 
   let usdDiffPercent = 0.0;
   if (route?.usdAmountIn && route?.usdAmountOut) {

@@ -10,6 +10,7 @@ interface AssetsContext {
   assets: Record<string, Asset[]>;
   assetsByChainID: (chainID?: string) => Asset[];
   getAsset(denom: string, chainID: string): Asset | undefined;
+  getAssetBySymbol(symbol: string, chainID: string): Asset | undefined;
   getFeeAsset(chainID: string): Promise<Asset | undefined>;
   getNativeAssets(): Asset[];
   isReady: boolean;
@@ -19,6 +20,7 @@ export const AssetsContext = createContext<AssetsContext>({
   assets: {},
   assetsByChainID: () => [],
   getAsset: () => undefined,
+  getAssetBySymbol: () => undefined,
   getFeeAsset: async () => undefined,
   getNativeAssets: () => [],
   isReady: false,
@@ -39,6 +41,15 @@ export function AssetsProvider({ children }: { children: ReactNode }) {
   const getAsset = useCallback(
     (denom: string, chainID: string) => {
       const asset = assets[chainID]?.find((asset) => asset.denom === denom);
+      return asset;
+    },
+    [assets],
+  );
+
+  const getAssetBySymbol = useCallback(
+    (symbol: string, chainID: string) => {
+      const symbolCaseNormalized = symbol.toUpperCase();
+      const asset = assets[chainID]?.find((asset) => asset.symbol?.toUpperCase() === symbolCaseNormalized);
       return asset;
     },
     [assets],
@@ -110,6 +121,7 @@ export function AssetsProvider({ children }: { children: ReactNode }) {
         assets,
         assetsByChainID,
         getAsset,
+        getAssetBySymbol,
         getFeeAsset,
         getNativeAssets,
         isReady,
