@@ -185,7 +185,7 @@ export const SwapStep = ({ action, actions, statusData }: SwapStepProps) => {
       data-testid={`operation-step-${operationIndex}`}
       data-test-value={dataTestValue}
     >
-      <div className="flex h-14 w-14 items-center justify-center">{renderSwapState}</div>
+      <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center">{renderSwapState}</div>
       <div className="max-w-[18rem]">
         <Gap.Parent className="text-sm text-neutral-500">
           <span>Swap</span>
