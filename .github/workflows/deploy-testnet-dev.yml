@@ -1,12 +1,12 @@
-name: Deploy (testnet)
+name: Deploy (testnet-dev)
 on:
   pull_request:
     branches: [staging]
     types: [closed]
   push:
-    branches: [testnet]
+    branches: [testnet-dev]
   repository_dispatch:
-    types: [deploy-testnet]
+    types: [deploy-testnet-dev]
   workflow_dispatch:
 
 jobs:
@@ -28,9 +28,9 @@ jobs:
         run: git diff --exit-code origin/staging
 
       - id: fast-forward
-        name: Fast forward 'staging' → 'testnet'
+        name: Fast forward 'staging' → 'testnet-dev'
         run: git merge --ff-only origin/staging
 
-      - id: push-testnet
-        name: Push latest 'testnet'
-        run: git push --set-upstream origin testnet
+      - id: push-testnet-dev
+        name: Push latest 'testnet-dev'
+        run: git push --set-upstream origin testnet-dev
