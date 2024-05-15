@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { ComponentProps, forwardRef } from "react";
 
 import { cn } from "@/utils/ui";
@@ -23,8 +22,7 @@ export const ConnectedWalletButton = forwardRef<HTMLButtonElement, Props>(
         ref={ref}
       >
         {walletLogo && (
-          <Image
-            unoptimized
+          <img
             height={16}
             width={16}
             alt={walletName}

@@ -1,7 +1,6 @@
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
 import { matchSorter } from "match-sorter";
-import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Chain } from "@/hooks/useChains";
@@ -87,7 +86,7 @@ function ChainSelectContent({ chains, onChange, onClose }: Props) {
                 onClick={() => onChange(chain)}
                 data-testid="chain-item"
               >
-                <Image
+                <img
                   alt={chain.prettyName}
                   className="h-[48px] w-[48px] rounded-full object-contain"
                   width={48}

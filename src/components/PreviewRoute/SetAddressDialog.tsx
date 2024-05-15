@@ -3,7 +3,6 @@ import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
 import { Chain } from "@skip-router/core";
 import { PublicKey } from "@solana/web3.js";
-import Image from "next/image";
 import { useMemo, useState } from "react";
 import { FaKeyboard } from "react-icons/fa";
 import { MdCheck, MdClose } from "react-icons/md";
@@ -183,8 +182,7 @@ export const SetAddressDialog = ({
                         disabled={chainType === "svm" && wallet.isAvailable !== true}
                       >
                         {wallet.walletInfo.logo && (
-                          <Image
-                            unoptimized
+                          <img
                             height={36}
                             width={36}
                             alt={wallet.walletPrettyName}

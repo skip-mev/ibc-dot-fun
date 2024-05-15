@@ -1,6 +1,5 @@
 import { ArrowRightIcon, FingerPrintIcon, PencilSquareIcon } from "@heroicons/react/20/solid";
 import { RouteResponse } from "@skip-router/core";
-import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useMemo } from "react";
 import toast from "react-hot-toast";
 import { FaExternalLinkAlt, FaKeyboard } from "react-icons/fa";
@@ -195,7 +194,7 @@ export const ChainStep = ({
             )}
           >
             <div className="flex h-full w-full items-center justify-center rounded-full bg-white p-1">
-              <Image
+              <img
                 src={chain?.logoURI || "/logo-fallback.png"}
                 width={48}
                 height={48}
@@ -313,8 +312,7 @@ export const ChainStep = ({
                   className="opacity-50"
                 >
                   {chainAddress?.source !== "input" ? (
-                    <Image
-                      unoptimized
+                    <img
                       height={16}
                       width={16}
                       alt={"wallet"}
@@ -347,8 +345,7 @@ export const ChainStep = ({
             {chainAddress?.address && !isIntermidiaryChain && (
               <>
                 {chainAddress?.source !== "input" ? (
-                  <Image
-                    unoptimized
+                  <img
                     height={16}
                     width={16}
                     alt={"wallet"}

@@ -1,7 +1,6 @@
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/16/solid";
 import { ArrowLeftIcon, FaceFrownIcon } from "@heroicons/react/20/solid";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
-import Image from "next/image";
 
 import { DialogContent } from "@/components/Dialog";
 import { trackWallet, TrackWalletCtx } from "@/context/track-wallet";
@@ -91,8 +90,7 @@ export function WalletModal({ chainType, onClose, wallets }: Props) {
                   disabled={chainType === "svm" && wallet.isAvailable !== true}
                 >
                   {wallet.walletInfo.logo && (
-                    <Image
-                      unoptimized
+                    <img
                       height={36}
                       width={36}
                       alt={wallet.walletPrettyName}
