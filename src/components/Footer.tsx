@@ -1,11 +1,12 @@
 import Image from "next/image";
-import Link from "next/link";
+
+import { AdaptiveLink } from "./AdaptiveLink";
 
 function Footer() {
   return (
     <div className="relative flex flex-row items-center justify-center space-x-0 px-4 py-8 sm:py-12">
       <p className="text-sm text-black sm:text-base">Crafted by</p>
-      <Link
+      <AdaptiveLink
         href="https://skip.money/"
         target="_blank"
       >
@@ -20,7 +21,7 @@ function Footer() {
             }}
           />
         </div>
-      </Link>
+      </AdaptiveLink>
     </div>
   );
 }

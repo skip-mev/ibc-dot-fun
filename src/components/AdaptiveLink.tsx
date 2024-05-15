@@ -1,7 +1,6 @@
-import Link, { LinkProps } from "next/link";
 import { ComponentPropsWithoutRef, useMemo } from "react";
 
-export type AdaptiveLinkProps = LinkProps & Omit<ComponentPropsWithoutRef<"a">, "href"> & { isExternal?: boolean };
+export type AdaptiveLinkProps = ComponentPropsWithoutRef<"a"> & { isExternal?: boolean };
 
 export function AdaptiveLink({ href, isExternal, rel = "", target, ...props }: AdaptiveLinkProps) {
   const isActuallyExternal = useMemo(() => {
@@ -10,9 +9,6 @@ export function AdaptiveLink({ href, isExternal, rel = "", target, ...props }: A
     }
     if (typeof href === "string") {
       return href.startsWith("http");
-    }
-    if (typeof href === "object") {
-      return href.href?.startsWith("http");
     }
   }, [href, isExternal]);
 
@@ -25,7 +21,7 @@ export function AdaptiveLink({ href, isExternal, rel = "", target, ...props }: A
   }, [isActuallyExternal, rel, target]);
 
   return (
-    <Link
+    <a
       href={href}
       {...externalProps}
       {...props}

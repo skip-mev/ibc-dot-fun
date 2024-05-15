@@ -1,6 +1,6 @@
 import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { StargateClient } from "@cosmjs/stargate";
-import { accountParser } from "@skip-router/core/parser";
+import { accountParser } from "kujira.js";
 
 import { appUrl } from "@/constants/api";
 
