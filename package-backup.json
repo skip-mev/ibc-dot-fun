@@ -1,8 +1,9 @@
 {
   "name": "ibc-dot-fun",
-  "version": "0.2.8",
+  "version": "0.2.6",
   "private": true,
   "scripts": {
+    "build": "next build",
     "chains:update": "git submodule init && git submodule update --remote",
     "chains:generate": "tsx ./src/scripts/codegen.ts",
     "dev": "next dev",
@@ -14,10 +15,8 @@
     "test:e2e-1": "playwright test 1nobleUSDCToInjectiveINJ.spec.ts --project=chromium",
     "test:e2e-2": "playwright test 2injectiveINJToCosmoshubATOM.spec.ts --project=chromium",
     "test:e2e-3": "playwright test 3cosmoshubAtomToNobleUSDC.spec.ts --project=chromium",
-    "build": "tsup"
+    "visdeps": "bash ./src/scripts/visdeps.sh"
   },
-  "types": "dist/index.d.ts",
-  "main": "dist/index.js",
   "overrides": {
     "@cosmjs/amino": "0.31.x",
     "@cosmjs/cosmwasm-stargate": "0.31.x",
@@ -28,10 +27,6 @@
     "@cosmjs/stargate": "0.31.x",
     "@cosmjs/tendermint-rpc": "0.31.x",
     "cosmjs-types": "0.8.x"
-  },
-  "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
   },
   "dependencies": {
     "@cosmjs/amino": "0.31.x",
@@ -55,10 +50,12 @@
     "@cosmos-kit/vectis": "2.6.x",
     "@cosmos-kit/xdefi": "2.5.x",
     "@fontsource/jost": "^5.0.16",
+    "@graz-sh/types": "^0.0.14",
     "@heroicons/react": "^2.1.1",
     "@initia/initia-registry-types": "^0.0.17",
     "@injectivelabs/sdk-ts": "^1.14.5",
     "@injectivelabs/utils": "^1.14.5",
+    "@keplr-wallet/types": "^0.12.66",
     "@radix-ui/colors": "^3.0.0",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-collapsible": "^1.0.3",
@@ -76,6 +73,9 @@
     "@tanstack/query-sync-storage-persister": "^5.18.1",
     "@tanstack/react-query": "^5.18.1",
     "@tanstack/react-query-persist-client": "^5.18.1",
+    "@types/node": "^20.11.16",
+    "@types/react": "^18.2.53",
+    "@types/react-dom": "^18.2.18",
     "@vercel/analytics": "^1.1.2",
     "@vercel/edge-config": "^0.4.1",
     "autoprefixer": "^10.4.17",
@@ -87,7 +87,11 @@
     "download": "^8.0.0",
     "kujira.js": "0.9.x",
     "match-sorter": "^6.3.3",
+    "next": "^14.1.0",
+    "next-seo": "^6.4.0",
     "postcss": "^8.4.33",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
     "react-icons": "^5.1.0",
     "resend": "^3.1.0",
@@ -99,11 +103,10 @@
     "undici": "^6.6.1",
     "viem": "^2.7.16",
     "wagmi": "^2.5.7",
+    "zod": "^3.22.4",
     "zustand": "^4.5.0"
   },
   "devDependencies": {
-    "@graz-sh/types": "^0.0.14",
-    "@keplr-wallet/types": "^0.12.66",
     "@playwright/test": "^1.41.2",
     "@tanstack/eslint-plugin-query": "^5.18.1",
     "@testing-library/jest-dom": "^6.4.2",
@@ -111,9 +114,6 @@
     "@testing-library/user-event": "^14.5.2",
     "@types/download": "^8.0.5",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.11.16",
-    "@types/react": "^18.2.53",
-    "@types/react-dom": "^18.2.18",
     "@types/testing-library__jest-dom": "^5.14.9",
     "@typescript-eslint/eslint-plugin": "^6.20.0",
     "@typescript-eslint/parser": "^6.20.0",
@@ -129,8 +129,6 @@
     "json-schema-to-typescript": "^13.1.2",
     "json-schema-to-zod": "^1.2.0",
     "msw": "1.x",
-    "next": "^14.1.0",
-    "next-seo": "^6.4.0",
     "npm-run-all2": "^6.1.2",
     "p-map": "^7.0.1",
     "patch-package": "^8.0.0",
@@ -138,10 +136,8 @@
     "prettier-plugin-tailwindcss": "^0.5.11",
     "resize-observer-polyfill": "^1.5.1",
     "ts-jest": "^29.1.2",
-    "tsup": "^7.2.0",
     "tsx": "^4.7.0",
     "typed-query-selector": "^2.11.0",
-    "typescript": "5.2.x",
-    "zod": "^3.22.4"
+    "typescript": "5.2.x"
   }
 }

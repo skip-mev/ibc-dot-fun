@@ -3,7 +3,11 @@
 import { GasPrice } from "@cosmjs/stargate";
 import { FeeAsset } from "@skip-router/core";
 
-import { CUSTOM_GAS_PRICE_CHAIN_IDS } from "@/config/gas";
+const CUSTOM_GAS_PRICE_CHAIN_IDS: Record<string, GasPrice> = {
+  "dymension_1100-1": GasPrice.fromString("20000000000adym"),
+  "carbon-1": GasPrice.fromString("100swth"),
+  "akashnet-2": GasPrice.fromString("0.025uakt"),
+};
 
 export async function getChainFeeAssets(chainID: string): Promise<FeeAsset[]> {
   const response = await fetch(`/api/fee-assets/${chainID}`);

@@ -3,7 +3,8 @@ import Header from "@/components/Header";
 import { Help } from "@/components/Help";
 import SkipBanner from "@/components/SkipBanner";
 import { VersionCheck } from "@/components/VersionCheck";
-import { Widget } from "@/widget/Widget";
+
+import { Widget } from "../../dist/index.mjs";
 
 export default function Home() {
   return (

@@ -1,7 +1,9 @@
+import "@/styles/globals.css";
+
 import { ChainProvider } from "@cosmos-kit/react";
 import { WalletProvider } from "@solana/wallet-adapter-react";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
-import { ComponentProps, ReactNode } from "react";
+import { ComponentProps } from "react";
 import { Toaster } from "react-hot-toast";
 import { WagmiProvider } from "wagmi";
 
@@ -16,12 +18,12 @@ import { solanaWallets } from "@/lib/solana-wallet-adapter";
 import { config } from "@/lib/wagmi";
 import { SkipProvider } from "@/solve";
 
-type ChainProviderProps = ComponentProps<typeof ChainProvider>;
+export const Provider = ({ children }: { children?: React.ReactNode }) => {
+  type ChainProviderProps = ComponentProps<typeof ChainProvider>;
 
-const assets = getAssetLists() as ChainProviderProps["assetLists"];
-const chains = getChains() as ChainProviderProps["chains"];
+  const assets = getAssetLists() as ChainProviderProps["assetLists"];
+  const chains = getChains() as ChainProviderProps["chains"];
 
-export const Provider = ({ children }: { children: ReactNode }) => {
   return (
     <WalletProvider
       wallets={solanaWallets}

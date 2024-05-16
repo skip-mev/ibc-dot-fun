@@ -4,7 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { AppProps } from "next/app";
 
 import { DefaultSeo } from "@/components/DefaultSeo";
-import { Provider } from "@/widget/Widget";
+import { Provider } from "../../dist";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
