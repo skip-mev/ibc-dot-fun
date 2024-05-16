@@ -1,5 +1,3 @@
-import "@/styles/globals.css";
-
 import { ChainProvider } from "@cosmos-kit/react";
 import { WalletProvider } from "@solana/wallet-adapter-react";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
