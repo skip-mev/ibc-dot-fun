@@ -173,7 +173,12 @@ export const PreviewRoute = ({
       await skipClient.executeRoute({
         route,
         userAddresses,
-        validateGasBalance: route.txsRequired === 1,
+        validateGasBalance: true,
+        getFallbackGasAmount: async (chainID, chainType) => {
+          if (chainType === "cosmos") {
+            return Number(useSettingsStore.getState().customGasAmount);
+          }
+        },
         slippageTolerancePercent: useSettingsStore.getState().slippage,
         onTransactionTracked: async (txStatus) => {
           const makeExplorerUrl = await getExplorerUrl(txStatus.chainID);
