@@ -1,4 +1,7 @@
 import { useManager } from "@cosmos-kit/react";
+import { bech32mAddress } from "@penumbra-zone/bech32m/penumbra";
+import { createPraxClient, isPraxConnected, isPraxInstalled, requestPraxConnection } from "@penumbra-zone/client";
+import { ViewService } from "@penumbra-zone/protobuf";
 import { useWallet } from "@solana/wallet-adapter-react";
 import toast from "react-hot-toast";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
@@ -52,31 +55,83 @@ export const useMakeWallets = () => {
     let wallets: MinimalWallet[] = [];
 
     if (chainType === "cosmos") {
-      const chainName = chainIdToName[chainID];
-      const walletRepo = getWalletRepo(chainName);
-      wallets = walletRepo.wallets.map((wallet) => ({
-        walletName: wallet.walletName,
-        walletPrettyName: wallet.walletPrettyName,
-        walletInfo: {
-          logo: wallet.walletInfo.logo,
-        },
-        connect: async () => {
-          try {
-            await gracefullyConnect(wallet);
-            trackWallet.track("cosmos", wallet.walletName, chainType);
-          } catch (error) {
-            console.error(error);
-            toast.error(
-              <p>
-                <strong>Failed to connect!</strong>
-              </p>,
-            );
-            trackWallet.untrack("cosmos");
-          }
-        },
-        getAddress: async ({ signRequired, context }) => {
-          try {
-            if (trackWallet.get().cosmos && wallet.isWalletConnected && !wallet.isWalletDisconnected) {
+      if (chainID.includes("penumbra")) {
+        const wallet: MinimalWallet = {
+          walletName: "prax",
+          walletPrettyName: "Prax Wallet",
+          walletInfo: {
+            logo: "https://raw.githubusercontent.com/penumbra-zone/web/main/apps/extension/public/favicon/icon128.png",
+          },
+          connect: async () => {
+            console.error("Prax wallet is not supported");
+          },
+          getAddress: async () => {
+            try {
+              const isInstalled = await isPraxInstalled();
+              if (!isInstalled) throw new Error("Prax Wallet is not installed");
+              const isConnected = isPraxConnected();
+              if (!isConnected) {
+                await requestPraxConnection();
+              }
+              const viewClient = createPraxClient(ViewService);
+              const { address } = await viewClient.addressByIndex({});
+              if (!address) throw new Error("No address found");
+              const bech32 = bech32mAddress(address);
+              console.log(bech32);
+              return bech32;
+            } catch (error) {
+              console.error(error);
+              toast.error(
+                <p>
+                  <strong>Failed to get address!</strong>
+                </p>,
+              );
+            }
+          },
+          disconnect: async () => {
+            console.error("Prax wallet is not supported");
+          },
+          isWalletConnected: isPraxConnected(),
+        };
+        wallets.push(wallet);
+      } else {
+        const chainName = chainIdToName[chainID];
+        const walletRepo = getWalletRepo(chainName);
+        wallets = walletRepo.wallets.map((wallet) => ({
+          walletName: wallet.walletName,
+          walletPrettyName: wallet.walletPrettyName,
+          walletInfo: {
+            logo: wallet.walletInfo.logo,
+          },
+          connect: async () => {
+            try {
+              await gracefullyConnect(wallet);
+              trackWallet.track("cosmos", wallet.walletName, chainType);
+            } catch (error) {
+              console.error(error);
+              toast.error(
+                <p>
+                  <strong>Failed to connect!</strong>
+                </p>,
+              );
+              trackWallet.untrack("cosmos");
+            }
+          },
+          getAddress: async ({ signRequired, context }) => {
+            try {
+              if (trackWallet.get().cosmos && wallet.isWalletConnected && !wallet.isWalletDisconnected) {
+                if (signRequired) {
+                  trackWallet.track("cosmos", wallet.walletName, chainType);
+                }
+                if (context && wallet.address) {
+                  toast.success(`Successfully retrieved ${context} address from ${wallet.walletName}`);
+                }
+                return wallet.address;
+              }
+              await gracefullyConnect(wallet);
+              if (!trackWallet.get().cosmos) {
+                trackWallet.track("cosmos", wallet.walletName, chainType);
+              }
               if (signRequired) {
                 trackWallet.track("cosmos", wallet.walletName, chainType);
               }
@@ -84,33 +139,22 @@ export const useMakeWallets = () => {
                 toast.success(`Successfully retrieved ${context} address from ${wallet.walletName}`);
               }
               return wallet.address;
+            } catch (error) {
+              console.log(error);
+              toast.error(
+                <p>
+                  <strong>Failed to get address!</strong>
+                </p>,
+              );
             }
-            await gracefullyConnect(wallet);
-            if (!trackWallet.get().cosmos) {
-              trackWallet.track("cosmos", wallet.walletName, chainType);
-            }
-            if (signRequired) {
-              trackWallet.track("cosmos", wallet.walletName, chainType);
-            }
-            if (context && wallet.address) {
-              toast.success(`Successfully retrieved ${context} address from ${wallet.walletName}`);
-            }
-            return wallet.address;
-          } catch (error) {
-            console.log(error);
-            toast.error(
-              <p>
-                <strong>Failed to get address!</strong>
-              </p>,
-            );
-          }
-        },
-        disconnect: async () => {
-          await wallet.disconnect();
-          trackWallet.untrack("cosmos");
-        },
-        isWalletConnected: wallet.isWalletConnected,
-      }));
+          },
+          disconnect: async () => {
+            await wallet.disconnect();
+            trackWallet.untrack("cosmos");
+          },
+          isWalletConnected: wallet.isWalletConnected,
+        }));
+      }
     }
 
     if (chainType === "evm") {

@@ -585,7 +585,7 @@ export function useSwapWidget() {
       async (srcChain) => {
         const { cosmos, svm } = trackWallet.get();
 
-        if (srcChain && srcChain.chainType === "cosmos") {
+        if (srcChain && srcChain.chainType === "cosmos" && !srcChain.chainID.includes("penumbra")) {
           const { wallets } = getWalletRepo(srcChain.chainName);
           let wallet: (typeof wallets)[number] | undefined;
 
