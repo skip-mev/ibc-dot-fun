@@ -19,9 +19,9 @@ export default async function handler(req: NextApiRequest) {
     const [...args] = req.url!.split(splitter).pop()!.split("/");
     const uri = [API_URL, ...args].join("/");
     const headers = new Headers();
-    if (process.env.SKIP_API_KEY) {
-      headers.set("authorization", process.env.SKIP_API_KEY);
-    }
+    // if (process.env.SKIP_API_KEY) {
+    //   headers.set("authorization", process.env.SKIP_API_KEY);
+    // }
     return fetch(uri, {
       body: req.body,
       method: req.method,
