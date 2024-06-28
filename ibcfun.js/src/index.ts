@@ -1,0 +1,1 @@
+export { IbcWidget } from './IbcWidget';
