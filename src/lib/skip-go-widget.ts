@@ -44,7 +44,6 @@ export const praxWallet: MinimalWallet = {
   getAddress: async (props) => {
     const penumbraWalletIndex = props?.praxWallet?.index;
     const sourceChainID = props?.praxWallet?.sourceChainID;
-    console.log(props);
     try {
       const isInstalled = await isPraxInstalled();
       if (!isInstalled) {
@@ -52,6 +51,7 @@ export const praxWallet: MinimalWallet = {
       }
       await requestPraxAccess();
       const praxClient = createPraxClient(ViewService);
+
       const address = await praxClient.addressByIndex({
         addressIndex: {
           account: penumbraWalletIndex ? penumbraWalletIndex : 0,

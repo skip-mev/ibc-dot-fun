@@ -1,5 +1,5 @@
 import { createPromiseClient, PromiseClient, Transport } from "@connectrpc/connect";
-import { PenumbraProviderNotAvailableError } from "@penumbra-zone/client";
+import { PenumbraProvider, PenumbraProviderNotAvailableError } from "@penumbra-zone/client";
 import { assertGlobalPresent, assertProviderConnected } from "@penumbra-zone/client/assert";
 import { getPenumbraPort } from "@penumbra-zone/client/create";
 import { jsonOptions, PenumbraService } from "@penumbra-zone/protobuf";
@@ -161,7 +161,7 @@ export const assertProviderManifest = async (providerOrigin?: string, signal?: A
 
   return manifest;
 };
-
+let providerCache: PenumbraProvider | undefined;
 /**
  * Given a specific origin, identify the relevant injection or throw.  An
  * `undefined` origin is accepted but will throw.
@@ -171,7 +171,10 @@ export const assertProviderRecord = (providerOrigin?: string) => {
   if (!provider) {
     throw new PenumbraProviderNotAvailableError(providerOrigin);
   }
-  return provider;
+  if (!providerCache) {
+    providerCache = provider;
+  }
+  return providerCache;
 };
 
 export const assertStringIsOrigin = (s?: string) => {
