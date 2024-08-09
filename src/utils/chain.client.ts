@@ -1,7 +1,7 @@
 // importing cosmjs deps does not work in edge runtime environments
 
 import { GasPrice } from "@cosmjs/stargate";
-import { FeeAsset } from "@skip-go/core";
+import { FeeAsset } from "@skip-go/client";
 
 import { CUSTOM_GAS_PRICE_CHAIN_IDS } from "@/config/gas";
 

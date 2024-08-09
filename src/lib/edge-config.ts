@@ -1,7 +1,7 @@
 if (typeof window !== "undefined") {
   throw new Error("edge-config.ts should only be imported on the server");
 }
-import { ExperimentalFeature } from "@skip-go/core";
+import { ExperimentalFeature } from "@skip-go/client";
 import { createClient } from "@vercel/edge-config";
 import { z } from "zod";
 

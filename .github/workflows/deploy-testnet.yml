@@ -19,9 +19,13 @@ jobs:
         with:
           ref: testnet
 
+      - id: configure
+        name: configure
+        run: git config pull.ff true
+
       - id: pull-staging
         name: Pull latest 'staging'
-        run: git pull --ff-only origin staging
+        run: git pull origin staging
 
       - id: diff-check
         name: Check if 'testnet' is behind 'staging'

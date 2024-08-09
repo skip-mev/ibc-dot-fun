@@ -1,4 +1,4 @@
-import { Chain } from "@skip-go/core";
+import { Chain } from "@skip-go/client";
 import { useAssets, useChains } from "@skip-go/widget";
 import { useQueryState } from "nuqs";
 import { useEffect, useState } from "react";

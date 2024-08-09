@@ -44,7 +44,24 @@ const isPreview = (str: string) => {
   return false;
 };
 
+// Donetsk and Luhansk Regions of Ukraine, Russia, Crimea, Cuba, Iran, North Korea or Syria
+const BLOCKED_COUNTRY = ["RU", "CU", "IR", "KP", "SY"];
+
 export async function middleware(request: NextRequest) {
+  if (request.nextUrl.pathname === "/") {
+    const country = request.geo?.country || "US";
+
+    if (
+      BLOCKED_COUNTRY.includes(country) ||
+      (country == "UA" && request.geo?.city && request.geo?.city in ["Donetsk", "Luhansk", "Crimea"])
+    ) {
+      request.nextUrl.pathname = "/blocked";
+      return NextResponse.rewrite(request.nextUrl);
+    }
+
+    return NextResponse.next();
+  }
+
   // Check the origin from the request
   const origin = request.headers.get("origin") ?? "";
 
@@ -94,5 +111,5 @@ export async function middleware(request: NextRequest) {
 const stringArraySchema = z.array(z.string()).default([]);
 
 export const config = {
-  matcher: "/api/(.*)",
+  matcher: ["/api/(.*)", "/"],
 };
